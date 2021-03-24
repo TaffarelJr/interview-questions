@@ -15,6 +15,10 @@ trim_trailing_whitespace = false
 indent_size = 2
 tab_width = 2
 
+[*.{xml,json,csproj,html,css,js,ts}]
+indent_size = 2
+tab_width = 2
+
 #### .NET Coding Conventions ####
 [*.cs]
 # Organize usings
