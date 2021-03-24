@@ -1,2 +1,3 @@
-# interview-questions
-Puzzles to be solved.
+# Interview Questions
+
+A repository for questions posed during interview questions.
