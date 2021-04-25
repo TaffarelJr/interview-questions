@@ -21,12 +21,36 @@ namespace InterviewQuestions.CSharp.UniqueEmailAddresses
         }
 
         [Fact]
+        public void NumberOfUniqueEmailAddresses_ShouldIgnoreInvalidEmailAddresses()
+        {
+            // Arrange
+            var emails = new[]
+            {
+                null,
+                "",
+                "   ",
+                "contains a@space",
+                "too@many@ats",
+                "invalid^character@inlocalpart",
+                "invalidcharacter@in^domainpart",
+            };
+
+            var subject = new Solution();
+
+            // Act
+            var result = subject.NumberOfUniqueEmailAddresses(emails);
+
+            // Assert
+            result.Should().Be(0);
+        }
+
+        [Fact]
         public void NumberOfUniqueEmailAddresses_ShouldFlattenLocalPart()
         {
             // Arrange
             var emails = new[]
             {
-                "team1@somwhere.com",
+                "team1@somewhere.com",
                 "team.1+bob@somewhere.com",
                 "team1+jill+bob@somewhere.com",
             };
