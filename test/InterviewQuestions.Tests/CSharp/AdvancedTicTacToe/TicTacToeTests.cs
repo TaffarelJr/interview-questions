@@ -106,5 +106,137 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
             // Assert
             action.Should().Throw<InvalidOperationException>();
         }
+
+        [Theory]
+        [InlineData(2, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(2, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(3, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(3, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(4, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(4, TicTacToe.Player2, TicTacToe.Player1)]
+        public void PlacePiece_ShouldDetectRowWin(
+            int boardSize,
+            int player1,
+            int player2)
+        {
+            // Arrange
+            for (var player1Row = 1; player1Row <= boardSize; player1Row++)
+            {
+                var player2Row = player1Row == boardSize
+                    ? player1Row - 1
+                    : player1Row + 1;
+
+                var subject = new TicTacToe(boardSize);
+                for (var col = 1; col < boardSize; col++)
+                {
+                    // Act
+                    subject.PlacePiece(player1Row, col, player1).Should().Be(0);
+                    subject.PlacePiece(player2Row, col, player2).Should().Be(0);
+                }
+
+                // Assert winner
+                subject.PlacePiece(player1Row, boardSize, player1).Should().Be(player1);
+
+                // Assert game over
+                Action action = () => subject.PlacePiece(player2Row, boardSize, player2);
+                action.Should().Throw<InvalidOperationException>();
+            }
+        }
+
+        [Theory]
+        [InlineData(2, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(2, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(3, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(3, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(4, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(4, TicTacToe.Player2, TicTacToe.Player1)]
+        public void PlacePiece_ShouldDetectColumnWin(
+            int boardSize,
+            int player1,
+            int player2)
+        {
+            // Arrange
+            for (var player1Col = 1; player1Col <= boardSize; player1Col++)
+            {
+                var player2Col = player1Col == boardSize
+                    ? player1Col - 1
+                    : player1Col + 1;
+
+                var subject = new TicTacToe(boardSize);
+                for (var row = 1; row < boardSize; row++)
+                {
+                    // Act
+                    subject.PlacePiece(row, player1Col, player1).Should().Be(0);
+                    subject.PlacePiece(row, player2Col, player2).Should().Be(0);
+                }
+
+                // Assert winner
+                subject.PlacePiece(boardSize, player1Col, player1).Should().Be(player1);
+
+                // Assert game over
+                Action action = () => subject.PlacePiece(boardSize, player2Col, player2);
+                action.Should().Throw<InvalidOperationException>();
+            }
+        }
+
+        [Theory]
+        [InlineData(2, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(2, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(3, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(3, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(4, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(4, TicTacToe.Player2, TicTacToe.Player1)]
+        public void PlacePiece_ShouldDetectMainDiagonalWin(
+            int boardSize,
+            int player1,
+            int player2)
+        {
+            // Arrange
+            var subject = new TicTacToe(boardSize);
+            for (var i = 1; i < boardSize; i++)
+            {
+                // Act
+                subject.PlacePiece(i, i, player1).Should().Be(0);
+                subject.PlacePiece(i + 1, i, player2).Should().Be(0);
+            }
+
+            // Assert winner
+            subject.PlacePiece(boardSize, boardSize, player1).Should().Be(player1);
+
+            // Assert game over
+            Action action = () => subject.PlacePiece(boardSize - 1, boardSize, player2);
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Theory]
+        [InlineData(2, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(2, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(3, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(3, TicTacToe.Player2, TicTacToe.Player1)]
+        [InlineData(4, TicTacToe.Player1, TicTacToe.Player2)]
+        [InlineData(4, TicTacToe.Player2, TicTacToe.Player1)]
+        public void PlacePiece_ShouldDetectOppositeDiagonalWin(
+            int boardSize,
+            int player1,
+            int player2)
+        {
+            // Arrange
+            var subject = new TicTacToe(boardSize);
+            for (var row = 1; row < boardSize; row++)
+            {
+                var col = boardSize - row + 1;
+
+                // Act
+                subject.PlacePiece(row, col, player1).Should().Be(0);
+                subject.PlacePiece(row + 1, col, player2).Should().Be(0);
+            }
+
+            // Assert winner
+            subject.PlacePiece(boardSize, 1, player1).Should().Be(player1);
+
+            // Assert game over
+            Action action = () => subject.PlacePiece(boardSize - 1, 1, player2);
+            action.Should().Throw<InvalidOperationException>();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 {
@@ -10,9 +11,6 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 
         private readonly int[,] _board;
         private readonly int _maxIndex;
-        private readonly int _size;
-
-        private int _lastPlayer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TicTacToe"/> game board.
@@ -27,8 +25,39 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 
             _board = new int[n, n];
             _maxIndex = n - 1;  // Adjust for zero-based indexes
-            _size = n;
+            Size = n;
+            MaxPieces = n * n;
         }
+
+        /// <summary>
+        /// Gets the size of the Tic-Tac-Toe board.
+        /// </summary>
+        public int Size { get; }
+
+        /// <summary>
+        /// Gets the maximum number of pieces that can be placed on the game board.
+        /// </summary>
+        public int MaxPieces { get; }
+
+        /// <summary>
+        /// Gets the last player who placed a piece on the game board.
+        /// </summary>
+        public int LastPlayer { get; private set; }
+
+        /// <summary>
+        /// Gets the number of pieces that have been placed in the current game.
+        /// </summary>
+        public int PiecesPlaced { get; private set; }
+
+        /// <summary>
+        /// Gets a flag indicating whether the game is over.
+        /// </summary>
+        public bool GameOver { get; private set; }
+
+        /// <summary>
+        /// Gets the winner of the game.
+        /// </summary>
+        public int Winner { get; private set; }
 
         /// <summary>
         /// Places a piece on the game board.
@@ -61,31 +90,61 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
         /// -or- <paramref name="player"/> is not valid.</exception>
         /// <exception cref="InvalidOperationException">
         /// <paramref name="player"/> is attempting to move twice in a row.
-        /// -or- The specified coordinates are already taken.</exception>
+        /// -or- The specified coordinates are already taken.
+        /// -or- The game has already been completed.</exception>
         public int PlacePiece(int row, int col, int player)
         {
-            // Adjust coordinates for zero-based indexes
-            if (--row < 0)
-                throw new ArgumentOutOfRangeException(nameof(row), $"Row {row} is less than 1.");
-            if (--col < 0)
-                throw new ArgumentOutOfRangeException(nameof(col), $"Col {col} is less than 1.");
-            if (row > _maxIndex)
-                throw new ArgumentOutOfRangeException(nameof(row), $"Row {row} is greater than {_size}.");
-            if (col > _maxIndex)
-                throw new ArgumentOutOfRangeException(nameof(col), $"Col {col} is greater than {_size}.");
-
+            if (row < 1 || row > Size)
+                throw new ArgumentOutOfRangeException(nameof(row), $"Row {row} is not between 1 and {Size}.");
+            if (col < 1 || col > Size)
+                throw new ArgumentOutOfRangeException(nameof(col), $"Col {col} is not between 1 and {Size}.");
             if (player != Player1 && player != Player2)
                 throw new ArgumentOutOfRangeException(nameof(player), $"Player {player} is not recognized.");
-            if (player == _lastPlayer)
+
+            if (GameOver)
+                throw new InvalidOperationException("The game is already over.");
+            if (player == LastPlayer)
                 throw new InvalidOperationException($"Player {player} is attempting to move twice in a row.");
-            _lastPlayer = player;
+            if (_board[--row, --col] != 0)  // Adjust the coordinates for zero-based indexes
+                throw new InvalidOperationException($"A piece has already been placed at [{++row},{++col}].");
 
-            if (_board[row, col] != 0)
-                throw new InvalidOperationException($"A piece has already been placed at [{row},{col}].");
+            // If everything looks good, place the piece
             _board[row, col] = player;
+            LastPlayer = player;
+            PiecesPlaced++;
 
-            // No win yet
-            return 0;
+            // Check for a possible winner
+            if (RowWin(row, player)
+                || ColumnWin(col, player)
+                || (row == col && MainDiagonalWin(player))
+                || (row == _maxIndex - col && OppositeDiagonalWin(player)))
+                    Winner = player;
+
+            // Check if the game is over
+            if (Winner > 0 || PiecesPlaced == MaxPieces)
+                GameOver = true;
+
+            return Winner;
         }
+
+        private bool RowWin(int row, int player) =>
+            Enumerable.Range(0, Size)
+                .Select(col => _board[row, col])
+                .All(p => p == player);
+
+        private bool ColumnWin(int col, int player) =>
+            Enumerable.Range(0, Size)
+                .Select(row => _board[row, col])
+                .All(p => p == player);
+
+        private bool MainDiagonalWin(int player) =>
+            Enumerable.Range(0, Size)
+                .Select(i => _board[i, i])
+                .All(p => p == player);
+
+        private bool OppositeDiagonalWin(int player) =>
+            Enumerable.Range(0, Size)
+                .Select(i => _board[i, _maxIndex - i])
+                .All(p => p == player);
     }
 }
