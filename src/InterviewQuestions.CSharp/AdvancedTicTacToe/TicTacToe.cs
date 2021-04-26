@@ -3,17 +3,31 @@ using System.Linq;
 
 namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 {
+    /// <summary>
+    /// Encapsulates the logic for a game of Tic-Tac-Toe.
+    /// </summary>
     public class TicTacToe
     {
+        /// <summary>
+        /// The minimum size allowed for the game board.
+        /// </summary>
         public const int MinimumGameBoardSize = 2;
+
+        /// <summary>
+        /// The integer representing Player 1.
+        /// </summary>
         public const int Player1 = 1;
+
+        /// <summary>
+        /// The integer representing Player 2.
+        /// </summary>
         public const int Player2 = 2;
 
-        private readonly int[,] _board;
+        private readonly int[][] _board;
         private readonly int _maxIndex;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TicTacToe"/> game board.
+        /// Initializes a new instance of the <see cref="TicTacToe"/> class.
         /// </summary>
         /// <param name="n">Indicates the dimensions for the game board. <i>(n×n)</i></param>
         /// <exception cref="ArgumentOutOfRangeException">
@@ -23,8 +37,13 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
             if (n < MinimumGameBoardSize)
                 throw new ArgumentOutOfRangeException(nameof(n));
 
-            _board = new int[n, n];
-            _maxIndex = n - 1;  // Adjust for zero-based indexes
+            _board = new int[n][];
+            for (var i = 0; i < n; i++)
+            {
+                _board[i] = new int[n];
+            }
+
+            _maxIndex = n - 1;
             Size = n;
             MaxPieces = n * n;
         }
@@ -50,7 +69,7 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
         public int PiecesPlaced { get; private set; }
 
         /// <summary>
-        /// Gets a flag indicating whether the game is over.
+        /// Gets a value indicating whether the game is over.
         /// </summary>
         public bool GameOver { get; private set; }
 
@@ -95,21 +114,21 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
         public int PlacePiece(int row, int col, int player)
         {
             if (row < 1 || row > Size)
-                throw new ArgumentOutOfRangeException(nameof(row), $"Row {row} is not between 1 and {Size}.");
+                throw new ArgumentOutOfRangeException(nameof(row));
             if (col < 1 || col > Size)
-                throw new ArgumentOutOfRangeException(nameof(col), $"Col {col} is not between 1 and {Size}.");
+                throw new ArgumentOutOfRangeException(nameof(col));
             if (player != Player1 && player != Player2)
-                throw new ArgumentOutOfRangeException(nameof(player), $"Player {player} is not recognized.");
+                throw new ArgumentOutOfRangeException(nameof(player));
 
             if (GameOver)
                 throw new InvalidOperationException("The game is already over.");
             if (player == LastPlayer)
-                throw new InvalidOperationException($"Player {player} is attempting to move twice in a row.");
-            if (_board[--row, --col] != 0)  // Adjust the coordinates for zero-based indexes
-                throw new InvalidOperationException($"A piece has already been placed at [{++row},{++col}].");
+                throw new InvalidOperationException("Player cannot move twice in a row.");
+            if (_board[--row][--col] != 0) // Adjust the coordinates for zero-based indexes
+                throw new InvalidOperationException($"A piece already exists at these coordinates.");
 
             // If everything looks good, place the piece
-            _board[row, col] = player;
+            _board[row][col] = player;
             LastPlayer = player;
             PiecesPlaced++;
 
@@ -129,22 +148,22 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 
         private bool RowWin(int row, int player) =>
             Enumerable.Range(0, Size)
-                .Select(col => _board[row, col])
+                .Select(col => _board[row][col])
                 .All(p => p == player);
 
         private bool ColumnWin(int col, int player) =>
             Enumerable.Range(0, Size)
-                .Select(row => _board[row, col])
+                .Select(row => _board[row][col])
                 .All(p => p == player);
 
         private bool MainDiagonalWin(int player) =>
             Enumerable.Range(0, Size)
-                .Select(i => _board[i, i])
+                .Select(i => _board[i][i])
                 .All(p => p == player);
 
         private bool OppositeDiagonalWin(int player) =>
             Enumerable.Range(0, Size)
-                .Select(i => _board[i, _maxIndex - i])
+                .Select(i => _board[i][_maxIndex - i])
                 .All(p => p == player);
     }
 }
