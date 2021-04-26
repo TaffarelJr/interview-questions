@@ -238,5 +238,27 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
             Action action = () => subject.PlacePiece(boardSize - 1, 1, player2);
             action.Should().Throw<InvalidOperationException>();
         }
+
+        [Fact]
+        public void PlacePiece_ShouldDetectTie()
+        {
+            // Arrange
+            var subject = new TicTacToe(3);
+
+            // Act
+            subject.PlacePiece(1, 1, TicTacToe.Player1).Should().Be(0);
+            subject.PlacePiece(2, 1, TicTacToe.Player2).Should().Be(0);
+            subject.PlacePiece(3, 1, TicTacToe.Player1).Should().Be(0);
+            subject.PlacePiece(1, 2, TicTacToe.Player2).Should().Be(0);
+            subject.PlacePiece(3, 2, TicTacToe.Player1).Should().Be(0);
+            subject.PlacePiece(3, 3, TicTacToe.Player2).Should().Be(0);
+            subject.PlacePiece(1, 3, TicTacToe.Player1).Should().Be(0);
+            subject.PlacePiece(2, 2, TicTacToe.Player2).Should().Be(0);
+            subject.PlacePiece(2, 3, TicTacToe.Player1).Should().Be(0);
+
+            // Assert
+            subject.GameOver.Should().BeTrue();
+            subject.Winner.Should().Be(0);
+        }
     }
 }
