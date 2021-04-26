@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InterviewQuestions.CSharp</name>
+    </assembly>
+    <members>
+        <member name="T:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe">
+            <summary>
+            Encapsulates the logic for a game of Tic-Tac-Toe.
+            </summary>
+        </member>
+        <member name="F:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.MinimumGameBoardSize">
+            <summary>
+            The minimum size allowed for the game board.
+            </summary>
+        </member>
+        <member name="F:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.Player1">
+            <summary>
+            The integer representing Player 1.
+            </summary>
+        </member>
+        <member name="F:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.Player2">
+            <summary>
+            The integer representing Player 2.
+            </summary>
+        </member>
+        <member name="M:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe"/> class.
+            </summary>
+            <param name="n">Indicates the dimensions for the game board. <i>(n×n)</i></param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            <paramref name="n"/> is less than <see cref="F:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.MinimumGameBoardSize"/>.</exception>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.Size">
+            <summary>
+            Gets the size of the Tic-Tac-Toe board.
+            </summary>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.MaxPieces">
+            <summary>
+            Gets the maximum number of pieces that can be placed on the game board.
+            </summary>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.LastPlayer">
+            <summary>
+            Gets the last player who placed a piece on the game board.
+            </summary>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.PiecesPlaced">
+            <summary>
+            Gets the number of pieces that have been placed in the current game.
+            </summary>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.GameOver">
+            <summary>
+            Gets a value indicating whether the game is over.
+            </summary>
+        </member>
+        <member name="P:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.Winner">
+            <summary>
+            Gets the winner of the game.
+            </summary>
+        </member>
+        <member name="M:InterviewQuestions.CSharp.AdvancedTicTacToe.TicTacToe.PlacePiece(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Places a piece on the game board.
+            </summary>
+            <param name="row">The row in which to place a piece.</param>
+            <param name="col">The column in which to place a piece.</param>
+            <param name="player">The player (1 or 2) placing the piece.</param>
+            <returns>A value indicating the result of the placement:
+            <list type="table">
+              <listheader>
+                <term>Value</term>
+                <description>Description</description>
+              </listheader>
+              <item>
+                <term>0</term>
+                <description>No winner yet</description>
+              </item>
+              <item>
+                <term>1</term>
+                <description>Player 1 won</description>
+              </item>
+              <item>
+                <term>2</term>
+                <description>Player 2 won</description>
+              </item>
+            </list></returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            <paramref name="row"/> is not valid.
+            -or- <paramref name="col"/> is not valid.
+            -or- <paramref name="player"/> is not valid.</exception>
+            <exception cref="T:System.InvalidOperationException">
+            <paramref name="player"/> is attempting to move twice in a row.
+            -or- The specified coordinates are already taken.
+            -or- The game has already been completed.</exception>
+        </member>
+        <member name="T:InterviewQuestions.CSharp.UniqueEmailAddresses.Solution">
+            <summary>
+            The class that contains the challenge solution.
+            </summary>
+        </member>
+        <member name="M:InterviewQuestions.CSharp.UniqueEmailAddresses.Solution.NumberOfUniqueEmailAddresses(System.String[])">
+            <summary>
+            Returns the number of unique email addresses,
+            following the rules outlined in the challenge.
+            </summary>
+            <param name="emails">The list of email adddresses to be inspected.</param>
+            <returns>The number of unique email addresses.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="emails"/> is <c>null</c>.</exception>
+        </member>
+    </members>
+</doc>
