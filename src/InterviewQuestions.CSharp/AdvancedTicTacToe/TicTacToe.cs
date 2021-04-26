@@ -1,14 +1,25 @@
+using System;
+
 namespace InterviewQuestions.CSharp.AdvancedTicTacToe
 {
     public class TicTacToe
     {
+        public const int MinimumGameBoardSize = 2;
+
+        private readonly int[,] _board;
+
         /// <summary>
-        /// Created a Tic Tac Tow game board
+        /// Initializes a new instance of the <see cref="TicTacToe"/> game board.
         /// </summary>
-        /// <param name="n">nxn dimension for the game board</param>
+        /// <param name="n">Indicates the dimensions for the game board. <i>(n×n)</i></param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="n"/> is less than <see cref="MinimumGameBoardSize"/>.</exception>
         public TicTacToe(int n)
         {
+            if (n < MinimumGameBoardSize)
+                throw new ArgumentOutOfRangeException(nameof(n));
 
+            _board = new int[n, n];
         }
 
         /// <summary>
@@ -20,7 +31,7 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
         /// <returns>0 = no winner, 1 = player 1 won, 2 = player 2 won</returns>
         public int PlacePiece(int row, int col, int player)
         {
-
+            return 0;
         }
     }
 }
