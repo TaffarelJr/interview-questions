@@ -113,9 +113,10 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
         /// -or- The game has already been completed.</exception>
         public int PlacePiece(int row, int col, int player)
         {
-            if (row < 1 || row > Size)
+            // Adjust the coordinates for zero-based indexes
+            if (--row < 0 || row > _maxIndex)
                 throw new ArgumentOutOfRangeException(nameof(row));
-            if (col < 1 || col > Size)
+            if (--col < 0 || col > _maxIndex)
                 throw new ArgumentOutOfRangeException(nameof(col));
             if (player != Player1 && player != Player2)
                 throw new ArgumentOutOfRangeException(nameof(player));
@@ -124,7 +125,7 @@ namespace InterviewQuestions.CSharp.AdvancedTicTacToe
                 throw new InvalidOperationException("The game is already over.");
             if (player == LastPlayer)
                 throw new InvalidOperationException("Player cannot move twice in a row.");
-            if (_board[--row][--col] != 0) // Adjust the coordinates for zero-based indexes
+            if (_board[row][col] != 0)
                 throw new InvalidOperationException($"A piece already exists at these coordinates.");
 
             // If everything looks good, place the piece
