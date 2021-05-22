@@ -40,7 +40,7 @@ public class TicTacToe
 
 ## Comments
 
-Since the game board size (<i>n</i>) appears to be a one-based number (as opposed to zero-based), I assume the `row` and `col` coordinates being passed in are also one-based for consistency. Internally, the method translates this to zero-based indexes for the jaggad array that represents the game board.
+Since the game board size (<i>n</i>) appears to be a one-based number (as opposed to zero-based), I assume the `row` and `col` coordinates being passed in are also one-based for consistency. Internally, the method translates this to zero-based indexes for the jagged array that represents the game board.
 
 While the instructions say all input to the game will be "valid moves," it also says I need to check if the game is over and not allow additional moves beyond that point. So clearly I must perform at least _some_ parameter validation. I opted to be thorough instead, and simply include all the validation. It was only a few extra lines; and I really dislike skipping parameter validation anyways. :) If this method were to be part of i.e. a high-performance game loop, I could take out several of the parameter validation checks and instead make sure the UI prevented out-of-range values. But the other validation must remain.
 
